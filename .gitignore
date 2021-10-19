@@ -1,0 +1,6 @@
+inputs/*
+!inputs/.gitkeep
+notebooks/*
+!notebooks/.gitkeep
+outputs
+wandb

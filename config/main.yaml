@@ -1,0 +1,54 @@
+defaults:
+  - model@params: base
+  - loss@params: base
+  - _self_
+
+hydra:
+  job_logging:
+    formatters:
+      simple:
+        format: '[%(levelname)s][%(name)s] - %(message)s'
+
+mlflow:
+  enabled: False
+  tracking_uri: http://127.0.0.1:5000
+  experiment: sugi-cassava
+
+wandb:
+  enabled: True
+  entity: imokuri
+  project: cassava
+  dir: ${hydra:runtime.cwd}/wandb
+
+settings:
+  print_freq: 100
+  # gpus: "1,2,3,4,5,6,7"
+  gpus: "7"
+
+  dirs:
+    input: ${hydra:runtime.cwd}/inputs/cassava-leaf-disease-classification/
+    train_image: ${settings.dirs.input}train_images/
+    test_image: ${settings.dirs.input}test_images/
+
+  job_type:
+    # - preprocess
+    - train
+    # - validate
+    # - inference
+
+  debug: False
+  n_debug_data: 1000
+
+  amp: False
+  multi_gpu: False
+
+  n_class: 5
+
+params:
+  seed: 440
+  n_fold: 10
+  epoch: 10
+  es_patience: 0
+  batch_size: 16
+  gradient_acc_step: 1
+  max_grad_norm: 1000
