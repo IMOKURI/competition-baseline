@@ -173,7 +173,7 @@ def setup_mlflow(c):
 def setup_wandb(c):
     if c.wandb.enabled:
         c_dict = OmegaConf.to_container(c.params, resolve=True)
-        c_dict["commit"] = get_commit_hash()
+        c_dict["commit"] = get_commit_hash(c.settings.dirs.working)
         run = wandb.init(
             entity=c.wandb.entity,
             project=c.wandb.project,
