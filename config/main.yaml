@@ -23,7 +23,8 @@ wandb:
 settings:
   print_freq: 100
   # gpus: "1,2,3,4,5,6,7"
-  gpus: "7"
+  # gpus: "7"
+  gpus: ""
 
   dirs:
     input: ${hydra:runtime.cwd}/inputs/cassava-leaf-disease-classification/
