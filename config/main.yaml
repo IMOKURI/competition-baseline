@@ -17,7 +17,7 @@ mlflow:
   experiment: sugi-cassava
 
 wandb:
-  enabled: True
+  enabled: False
   entity: imokuri
   project: cassava
   dir: ${hydra:runtime.cwd}/../cache/wandb
