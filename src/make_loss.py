@@ -1,5 +1,5 @@
 import torch.nn as nn
-from cosine_annealing_warmup import CosineAnnealingWarmupRestarts
+# from cosine_annealing_warmup import CosineAnnealingWarmupRestarts
 from torch.optim import SGD, Adam, AdamW
 from torch.optim.lr_scheduler import (CosineAnnealingLR,
                                       CosineAnnealingWarmRestarts)
@@ -56,14 +56,14 @@ def make_scheduler(c, optimizer, ds):
         scheduler = CosineAnnealingLR(
             optimizer, T_max=num_steps, eta_min=c.params.min_lr, last_epoch=-1
         )
-    elif c.params.scheduler == "CosineAnnealingWarmupRestarts":
-        scheduler = CosineAnnealingWarmupRestarts(
-            optimizer,
-            first_cycle_steps=num_steps,
-            max_lr=c.params.lr,
-            min_lr=c.params.min_lr,
-            warmup_steps=(num_steps // 10),
-        )
+    # elif c.params.scheduler == "CosineAnnealingWarmupRestarts":
+    #     scheduler = CosineAnnealingWarmupRestarts(
+    #         optimizer,
+    #         first_cycle_steps=num_steps,
+    #         max_lr=c.params.lr,
+    #         min_lr=c.params.min_lr,
+    #         warmup_steps=(num_steps // 10),
+    #     )
 
     else:
         raise Exception("Invalid scheduler.")
