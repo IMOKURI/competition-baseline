@@ -27,7 +27,7 @@ settings:
   gpus: ""
 
   dirs:
-    input: ${hydra:runtime.cwd}/inputs/cassava-leaf-disease-classification/
+    input: ${hydra:runtime.cwd}/../inputs/
     train_image: ${settings.dirs.input}train_images/
     test_image: ${settings.dirs.input}test_images/
 
