@@ -6,7 +6,6 @@ import random
 import time
 
 import git
-import hydra
 import mlflow
 import numpy as np
 import pkg_resources as pr
@@ -14,8 +13,16 @@ import requests
 import torch
 import wandb
 from omegaconf import DictConfig, ListConfig, OmegaConf
+from omegaconf.errors import ConfigAttributeError
 
 log = logging.getLogger("__main__").getChild("utils")
+
+
+def gpu_settings(c):
+    try:
+        os.environ["CUDA_VISIBLE_DEVICES"] = c.settings.gpus
+    except ConfigAttributeError:
+        pass
 
 
 def seed_torch(seed=42):

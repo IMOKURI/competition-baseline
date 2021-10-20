@@ -5,7 +5,7 @@ defaults:
 
 hydra:
   run:
-    dir: ../outputs/${settings.job_type}/${now:%Y-%m-%d_%H-%M-%S}
+    dir: ../outputs/${settings.job_type[0]}/${now:%Y-%m-%d_%H-%M-%S}
   job_logging:
     formatters:
       simple:
@@ -26,7 +26,6 @@ settings:
   print_freq: 100
   # gpus: "1,2,3,4,5,6,7"
   # gpus: "7"
-  # gpus: ""
 
   dirs:
     working: ${hydra:runtime.cwd}

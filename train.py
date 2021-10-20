@@ -17,8 +17,8 @@ log = logging.getLogger(__name__)
 @hydra.main(config_path="config", config_name="main")
 def main(c):
     log.info("Started.")
-    # os.environ["CUDA_VISIBLE_DEVICES"] = c.settings.gpus
 
+    utils.gpu_settings(c)
     utils.seed_torch(c.params.seed)
     utils.debug_settings(c)
 
