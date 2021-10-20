@@ -6,14 +6,14 @@ import random
 import time
 
 import git
+import hydra
 import mlflow
 import numpy as np
 import pkg_resources as pr
 import requests
 import torch
-from omegaconf import DictConfig, ListConfig, OmegaConf
-
 import wandb
+from omegaconf import DictConfig, ListConfig, OmegaConf
 
 log = logging.getLogger("__main__").getChild("utils")
 
@@ -212,7 +212,7 @@ def log_params_from_omegaconf_dict(parent_name, element):
 
 
 def get_commit_hash():
-    repo = git.Repo(search_parent_directories=True)
+    repo = git.Repo(hydra.runtime.cwd, search_parent_directories=True)
     sha = repo.head.object.hexsha
     return sha
 
