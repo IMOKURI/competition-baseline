@@ -20,7 +20,7 @@ wandb:
   enabled: True
   entity: imokuri
   project: cassava
-  dir: ${hydra:runtime.cwd}/wandb
+  dir: ${hydra:runtime.cwd}/../outputs/wandb
 
 settings:
   print_freq: 100
@@ -42,8 +42,8 @@ settings:
   debug: False
   n_debug_data: 1000
 
-  amp: False
-  multi_gpu: False
+  amp: True
+  multi_gpu: True
 
   n_class: 5
 
