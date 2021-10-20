@@ -53,6 +53,6 @@ params:
   n_fold: 10
   epoch: 10
   es_patience: 0
-  batch_size: 16
+  batch_size: 32
   gradient_acc_step: 1
   max_grad_norm: 1000
