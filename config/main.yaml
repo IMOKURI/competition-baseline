@@ -20,7 +20,7 @@ wandb:
   enabled: False
   entity: imokuri
   project: cassava
-  dir: ${hydra:runtime.cwd}/../wandb
+  dir: ${hydra:runtime.cwd}/../cache/wandb
 
 settings:
   print_freq: 100
