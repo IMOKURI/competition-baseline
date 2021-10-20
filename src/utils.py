@@ -164,7 +164,9 @@ def setup_mlflow(c):
         mlflow.set_experiment(c.mlflow.experiment)
 
         mlflow.start_run()
-        mlflow.set_tag("mlflow.source.git.commit", get_commit_hash())
+        mlflow.set_tag(
+            "mlflow.source.git.commit", get_commit_hash(c.settings.dirs.working)
+        )
         log_params_from_omegaconf_dict("", c.params)
 
 
@@ -211,8 +213,8 @@ def log_params_from_omegaconf_dict(parent_name, element):
             mlflow.log_param(f"{parent_name}.{i}", v)
 
 
-def get_commit_hash():
-    repo = git.Repo(c.settings.dirs.working, search_parent_directories=True)
+def get_commit_hash(dir_):
+    repo = git.Repo(dir_, search_parent_directories=True)
     sha = repo.head.object.hexsha
     return sha
 
