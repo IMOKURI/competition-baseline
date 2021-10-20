@@ -212,7 +212,7 @@ def log_params_from_omegaconf_dict(parent_name, element):
 
 
 def get_commit_hash():
-    repo = git.Repo(hydra.runtime.cwd, search_parent_directories=True)
+    repo = git.Repo(c.settings.dirs.working, search_parent_directories=True)
     sha = repo.head.object.hexsha
     return sha
 
