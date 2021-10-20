@@ -12,7 +12,7 @@ debug_train: ## Run training with debug
 
 
 clean: ## Clean work directory
-	@rm -rf outputs
+	@rm -rf ../outputs
 
 
 help: ## Show this help
