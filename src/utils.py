@@ -19,12 +19,12 @@ log = logging.getLogger("__main__").getChild("utils")
 
 
 def gpu_settings(c):
-    if os.environ.get("CUDA_VISIBLE_DEVICES") is not None:
-        return
-    try:
-        os.environ["CUDA_VISIBLE_DEVICES"] = c.settings.gpus
-    except ConfigAttributeError:
-        pass
+    if os.environ.get("CUDA_VISIBLE_DEVICES") is None:
+        try:
+            os.environ["CUDA_VISIBLE_DEVICES"] = c.settings.gpus
+        except ConfigAttributeError:
+            return
+    log.info(f"CUDA_VISIBLE_DEVICES: {os.environ['CUDA_VISIBLE_DEVICES']}")
 
 
 def seed_torch(seed=42):
