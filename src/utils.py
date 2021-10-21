@@ -40,12 +40,12 @@ def debug_settings(c):
 
 
 def gpu_settings(c):
-    if os.environ.get("CUDA_VISIBLE_DEVICES") is None:
-        try:
+    try:
+        if os.environ.get("CUDA_VISIBLE_DEVICES") is None:
             os.environ["CUDA_VISIBLE_DEVICES"] = c.settings.gpus
-        except ConfigAttributeError:
-            return
-    log.info(f"CUDA_VISIBLE_DEVICES: {os.environ['CUDA_VISIBLE_DEVICES']}")
+        log.info(f"CUDA_VISIBLE_DEVICES: {os.environ['CUDA_VISIBLE_DEVICES']}")
+    except ConfigAttributeError:
+        pass
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     log.info(f"torch device: {device}")
