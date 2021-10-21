@@ -18,12 +18,9 @@ log = logging.getLogger(__name__)
 def main(c):
     log.info("Started.")
 
-    utils.gpu_settings(c)
     utils.seed_torch(c.params.seed)
     utils.debug_settings(c)
-
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    torch.backends.cudnn.benchmark = True
+    device = utils.gpu_settings(c)
 
     utils.setup_mlflow(c)
     run = utils.setup_wandb(c)

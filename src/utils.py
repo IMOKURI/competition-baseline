@@ -18,15 +18,6 @@ from omegaconf.errors import ConfigAttributeError
 log = logging.getLogger("__main__").getChild("utils")
 
 
-def gpu_settings(c):
-    if os.environ.get("CUDA_VISIBLE_DEVICES") is None:
-        try:
-            os.environ["CUDA_VISIBLE_DEVICES"] = c.settings.gpus
-        except ConfigAttributeError:
-            return
-    log.info(f"CUDA_VISIBLE_DEVICES: {os.environ['CUDA_VISIBLE_DEVICES']}")
-
-
 def seed_torch(seed=42):
     random.seed(seed)
     os.environ["PYTHONHASHSEED"] = str(seed)
@@ -36,6 +27,8 @@ def seed_torch(seed=42):
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
 
+    torch.backends.cudnn.benchmark = True
+
 
 def debug_settings(c):
     if c.settings.debug:
@@ -44,6 +37,19 @@ def debug_settings(c):
         c.settings.print_freq = 10
         c.params.n_fold = 3
         c.params.epoch = 1
+
+
+def gpu_settings(c):
+    if os.environ.get("CUDA_VISIBLE_DEVICES") is None:
+        try:
+            os.environ["CUDA_VISIBLE_DEVICES"] = c.settings.gpus
+        except ConfigAttributeError:
+            return
+    log.info(f"CUDA_VISIBLE_DEVICES: {os.environ['CUDA_VISIBLE_DEVICES']}")
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    log.info(f"torch device: {device}")
+    return device
 
 
 class AverageMeter(object):
