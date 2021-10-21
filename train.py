@@ -1,9 +1,7 @@
 import logging
-import os
 
 import hydra
 import pandas as pd
-import torch
 
 import src.utils as utils
 from src.get_score import get_result
