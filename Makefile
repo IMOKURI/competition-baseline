@@ -8,7 +8,7 @@ train: ## Run training
 
 
 debug_train: ## Run training with debug
-	@python train.py settings.debug=True
+	@python train.py settings.debug=True hydra.verbose=True
 
 
 clean: ## Clean work directory

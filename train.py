@@ -6,8 +6,8 @@ import pandas as pd
 import torch
 
 import src.utils as utils
-from src.load_data import load_data
 from src.get_score import get_result
+from src.load_data import load_data
 from src.make_fold import make_fold
 from src.train_fold import train_fold
 
