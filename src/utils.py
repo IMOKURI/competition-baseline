@@ -19,6 +19,8 @@ log = logging.getLogger("__main__").getChild("utils")
 
 
 def gpu_settings(c):
+    if os.environ["CUDA_VISIBLE_DEVICES"] is not None:
+        return
     try:
         os.environ["CUDA_VISIBLE_DEVICES"] = c.settings.gpus
     except ConfigAttributeError:
