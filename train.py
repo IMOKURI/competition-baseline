@@ -5,8 +5,7 @@ import pandas as pd
 
 import src.utils as utils
 from src.get_score import get_result
-from src.load_data import load_data
-from src.make_fold import make_fold
+from src.load_data import InputData
 from src.train_fold import train_fold
 
 log = logging.getLogger(__name__)
@@ -23,8 +22,7 @@ def main(c):
     utils.setup_mlflow(c)
     run = utils.setup_wandb(c)
 
-    train, test, sub = load_data(c)
-    train = make_fold(c, train)
+    input = InputData(c)
 
     oof_df = pd.DataFrame()
     losses = utils.AverageMeter()
@@ -32,7 +30,7 @@ def main(c):
         log.info(f"========== fold {fold} training ==========")
         utils.seed_torch(c.params.seed + fold)
 
-        _oof_df, score, loss = train_fold(c, train, fold, device)
+        _oof_df, score, loss = train_fold(c, input.train, fold, device)
         oof_df = pd.concat([oof_df, _oof_df])
         losses.update(loss)
 

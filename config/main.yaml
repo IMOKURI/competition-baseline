@@ -24,7 +24,7 @@ wandb:
 
 settings:
   print_freq: 100
-  # gpus: "1,2,3,4,5,6,7"
+  gpus: "4,5,6,7"
   # gpus: "7"
 
   dirs:
@@ -32,6 +32,11 @@ settings:
     input: ${hydra:runtime.cwd}/../inputs/
     train_image: ${settings.dirs.input}train_images/
     test_image: ${settings.dirs.input}test_images/
+
+  inputs:
+    - train.csv
+    # - test.csv
+    # - sample_submission.csv
 
   job_type:
     # - preprocess
