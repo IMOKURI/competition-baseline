@@ -1,6 +1,7 @@
 defaults:
   - model@params: base
   - loss@params: base
+  - override hydra/sweeper: optuna
   - _self_
 
 hydra:
@@ -10,6 +11,20 @@ hydra:
     formatters:
       simple:
         format: '[%(levelname)s][%(name)s] - %(message)s'
+  sweep:
+    dir: ../multirun/${settings.job_type[0]}/${now:%Y-%m-%d_%H-%M-%S}
+    subdir: ${hydra.job.num}
+  sweeper:
+    study_name: train
+    direction: minimize
+    n_jobs: 1
+    n_trials: 10
+    search_space:
+      params.min_lr:
+        type: float
+        low: 1e-7
+        high: 1e-5
+        log: True
 
 mlflow:
   enabled: False

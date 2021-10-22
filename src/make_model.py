@@ -20,7 +20,10 @@ class BaseModel(nn.Module):
         self.amp = c.settings.amp
         self.model_name = c.params.model_name
         self.model = timm.create_model(
-            self.model_name, pretrained=pretrained, num_classes=c.settings.n_class
+            self.model_name,
+            pretrained=pretrained,
+            num_classes=c.settings.n_class,
+            **c.params.model_params
         )
 
         if "convmixer" in self.model_name:

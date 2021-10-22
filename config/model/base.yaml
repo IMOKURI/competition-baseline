@@ -5,3 +5,6 @@ model_name: swin_base_patch4_window7_224_in22k
 # model_name: swin_large_patch4_window12_384_in22k
 # model_name: dm_nfnet_f5
 size: 224
+
+model_params:
+  drop_rate: 0.1

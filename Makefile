@@ -6,13 +6,19 @@ NOW = $(shell date '+%Y%m%d-%H%M%S')
 train: ## Run training
 	@nohup python train.py > /tmp/nohup_$(NOW).log &
 
+tuning: ## Run training with parameter tuning
+	@nohup python train.py --multirun > /tmp/nohup_$(NOW).log &
+
 
 debug_train: ## Run training with debug
 	@python train.py settings.debug=True hydra.verbose=True
 
+debug_tuning: ## Run training with parameter tuning with debug
+	@python train.py --multirun settings.debug=True hydra.verbose=True hydra.sweeper.n_trials=2
+
 
 clean: ## Clean work directory
-	@rm -rf ../outputs
+	@rm -rf ../outputs ../multirun
 
 
 help: ## Show this help
