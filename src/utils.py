@@ -3,6 +3,7 @@ import logging
 import math
 import os
 import random
+import subprocess
 import time
 
 import git
@@ -16,6 +17,34 @@ from omegaconf import DictConfig, ListConfig, OmegaConf
 from omegaconf.errors import ConfigAttributeError
 
 log = logging.getLogger("__main__").getChild("utils")
+
+GPU_INFO_DEFAULT_ATTRIBUTES = (
+    "index",
+    "uuid",
+    "name",
+    "timestamp",
+    "memory.total",
+    "memory.free",
+    "memory.used",
+    "utilization.gpu",
+    "utilization.memory",
+)
+
+
+def get_gpu_info(
+    nvidia_smi_path="nvidia-smi", keys=GPU_INFO_DEFAULT_ATTRIBUTES, units=False
+):
+    nu_opt = "" if units else ",nounits"
+    cmd = "%s --query-gpu=%s --format=csv,noheader%s" % (
+        nvidia_smi_path,
+        ",".join(keys),
+        nu_opt,
+    )
+    output = subprocess.check_output(cmd, shell=True)
+    lines = output.decode().split("\n")
+    lines = [line.strip() for line in lines if line.strip() != ""]
+
+    return [{k: v for k, v in zip(keys, line.split(", "))} for line in lines]
 
 
 def seed_torch(seed=42):
