@@ -77,7 +77,7 @@ def gpu_settings(c):
         pass
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    log.info(f"torch device: {device}")
+    log.info(f"torch device: {device}, device count: {torch.cuda.device_count()}")
     return device
 
 
