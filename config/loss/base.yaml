@@ -1,7 +1,8 @@
 # criterion: BCEWithLogitsLoss
-criterion: CrossEntropyLoss
+criterion: LabelSmoothCrossEntropyLoss
 optimizer: Adam
 scheduler: CosineAnnealingWarmRestarts
 lr: 1e-5
 min_lr: 1e-6
 weight_decay: 1e-7
+label_smoothing: 1e-4
