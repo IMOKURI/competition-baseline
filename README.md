@@ -1,4 +1,4 @@
-# Image Competition Baseline
+# Competition Baseline
 
 
 
