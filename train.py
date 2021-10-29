@@ -4,7 +4,7 @@ import hydra
 import pandas as pd
 
 import src.utils as utils
-from src.get_score import get_result
+from src.get_score import record_result
 from src.load_data import InputData
 from src.train_fold import train_fold
 
@@ -35,7 +35,7 @@ def main(c):
         losses.update(loss)
 
         log.info(f"========== fold {fold} result ==========")
-        get_result(c, _oof_df, fold, loss)
+        record_result(c, _oof_df, fold, loss)
 
         if c.settings.debug:
             break
@@ -43,7 +43,7 @@ def main(c):
     oof_df.to_csv("oof_df.csv", index=False)
 
     log.info(f"========== final result ==========")
-    score = get_result(c, oof_df, c.params.n_fold, losses.avg)
+    score = record_result(c, oof_df, c.params.n_fold, losses.avg)
 
     log.info("Done.")
 

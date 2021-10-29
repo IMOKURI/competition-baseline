@@ -17,7 +17,7 @@ def get_score(scoring, y_true, y_pred):
         raise Exception("Invalid scoring.")
 
 
-def get_result(c, df, fold, loss=None):
+def record_result(c, df, fold, loss=None):
     if c.settings.scoring == "jaccard":
         score = df["jaccard"].mean()
     else:
