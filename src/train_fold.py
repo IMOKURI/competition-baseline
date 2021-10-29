@@ -35,8 +35,7 @@ def train_fold(c, df, fold, device):
     # ====================================================
     # Model
     # ====================================================
-    model = make_model(c)
-    model.to(device)
+    model = make_model(c, device)
 
     criterion = make_criterion(c)
     optimizer = make_optimizer(c, model)

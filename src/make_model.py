@@ -5,7 +5,7 @@ import torch.cuda.amp as amp
 import torch.nn as nn
 
 
-def make_model(c):
+def make_model(c, device=None):
     if c.settings.model_type == "image":
         model = ImageModel(c)
     else:
@@ -13,6 +13,8 @@ def make_model(c):
 
     if c.settings.multi_gpu:
         model = nn.DataParallel(model)
+    if device:
+        model.to(device)
     return model
 
 
