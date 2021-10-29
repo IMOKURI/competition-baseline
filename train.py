@@ -16,7 +16,7 @@ def main(c):
     log.info("Started.")
     log.info(utils.get_gpu_info(units=True))
 
-    utils.seed_torch(c.params.seed)
+    utils.fix_seed(c.params.seed)
     utils.debug_settings(c)
     device = utils.gpu_settings(c)
 
@@ -28,7 +28,7 @@ def main(c):
     losses = utils.AverageMeter()
     for fold in range(c.params.n_fold):
         log.info(f"========== fold {fold} training ==========")
-        utils.seed_torch(c.params.seed + fold)
+        utils.fix_seed(c.params.seed + fold)
 
         _oof_df, score, loss = train_fold(c, input.train, fold, device)
         oof_df = pd.concat([oof_df, _oof_df])

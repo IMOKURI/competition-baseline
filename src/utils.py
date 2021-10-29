@@ -8,7 +8,6 @@ import time
 
 import git
 import numpy as np
-import pkg_resources as pr
 import requests
 import torch
 import wandb
@@ -46,7 +45,7 @@ def get_gpu_info(
     return [{k: v for k, v in zip(keys, line.split(", "))} for line in lines]
 
 
-def seed_torch(seed=42):
+def fix_seed(seed=42):
     random.seed(seed)
     os.environ["PYTHONHASHSEED"] = str(seed)
     np.random.seed(seed)
@@ -110,13 +109,6 @@ def timeSince(since, percent):
     es = s / (percent)
     rs = es - s
     return "%s (remain %s)" % (asMinutes(s), asMinutes(rs))
-
-
-def get_torch_version():
-    packages = [str(p).replace(" ", "==") for p in pr.working_set]
-    check = ["torch==", "torchvision=="]
-    versions = [p for p in packages if any(c in p for c in check)]
-    return versions
 
 
 # https://github.com/Bjarten/early-stopping-pytorch
