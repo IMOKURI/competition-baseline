@@ -1,6 +1,5 @@
 import logging
 
-import mlflow
 import numpy as np
 import wandb
 from sklearn.metrics import accuracy_score, mean_squared_error
@@ -27,8 +26,6 @@ def get_result(c, df, fold, loss=None):
         score = get_score(c.settings.scoring, labels, preds)
 
     log.info(f"Score: {score:<.5f}")
-    if c.mlflow.enabled:
-        mlflow.log_metric("score", score, fold)
     if c.wandb.enabled:
         wandb.log({"score": score, "fold": fold})
         if loss is not None:

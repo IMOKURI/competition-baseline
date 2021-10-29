@@ -7,13 +7,12 @@ import subprocess
 import time
 
 import git
-import mlflow
 import numpy as np
 import pkg_resources as pr
 import requests
 import torch
 import wandb
-from omegaconf import DictConfig, ListConfig, OmegaConf
+from omegaconf import OmegaConf
 from omegaconf.errors import ConfigAttributeError
 
 log = logging.getLogger("__main__").getChild("utils")
@@ -61,7 +60,6 @@ def seed_torch(seed=42):
 
 def debug_settings(c):
     if c.settings.debug:
-        c.mlflow.enabled = False
         c.wandb.enabled = False
         c.settings.print_freq = 10
         c.params.n_fold = 3
@@ -125,9 +123,7 @@ def get_torch_version():
 class EarlyStopping:
     """Early stops the training if validation loss doesn't improve after a given patience."""
 
-    def __init__(
-        self, patience=7, verbose=False, delta=0, path="checkpoint.pt", mlflow=False
-    ):
+    def __init__(self, patience=7, verbose=False, delta=0, path="checkpoint.pt"):
         """
         Args:
             patience (int): How long to wait after last time validation loss improved.
@@ -148,7 +144,6 @@ class EarlyStopping:
         self.delta = delta
         self.path = path
         self.best_preds = None
-        self.mlflow = mlflow
 
     def __call__(self, val_loss, score, model, preds):
 
@@ -175,12 +170,6 @@ class EarlyStopping:
             log.info(
                 f"Validation loss decreased ({self.best_loss:.6f} --> {val_loss:.6f}).  Saving model ..."
             )
-        # if self.mlflow:
-        #     mlflow.pytorch.log_model(
-        #         model,
-        #         self.path,
-        #         pip_requirements=get_torch_version(),
-        #     )
         torch.save(model.state_dict(), f"{self.path}_best.pth")
         self.best_loss = val_loss
 
@@ -202,18 +191,6 @@ def compute_grad_norm(parameters, norm_type=2.0):
     return total_norm
 
 
-def setup_mlflow(c):
-    if c.mlflow.enabled:
-        mlflow.set_tracking_uri(c.mlflow.tracking_uri)
-        mlflow.set_experiment(c.mlflow.experiment)
-
-        mlflow.start_run()
-        mlflow.set_tag(
-            "mlflow.source.git.commit", get_commit_hash(c.settings.dirs.working)
-        )
-        log_params_from_omegaconf_dict("", c.params)
-
-
 def setup_wandb(c):
     if c.wandb.enabled:
         os.makedirs(os.path.abspath(c.wandb.dir), exist_ok=True)
@@ -229,33 +206,12 @@ def setup_wandb(c):
         return run
 
 
-def teardown_mlflow(c, loss):
-    if c.mlflow.enabled:
-        mlflow.log_metric("loss", loss)
-        mlflow.log_artifacts(".")
-        mlflow.end_run()
-
-
 def teardown_wandb(c, run, loss):
     if c.wandb.enabled:
         wandb.summary["loss"] = loss
-        artifact = wandb.Artifact(c.params.model_name.replace('/', '-'), type="model")
+        artifact = wandb.Artifact(c.params.model_name.replace("/", "-"), type="model")
         artifact.add_dir(".")
         run.log_artifact(artifact)
-
-
-def log_params_from_omegaconf_dict(parent_name, element):
-    if isinstance(element, DictConfig):
-        for k, v in element.items():
-            key = f"{k}" if parent_name == "" else f"{parent_name}.{k}"
-            if isinstance(v, DictConfig) or isinstance(v, ListConfig):
-                log_params_from_omegaconf_dict(key, v)
-            else:
-                mlflow.log_param(key, v)
-    elif isinstance(element, ListConfig):
-        for i, v in enumerate(element):
-            key = f"{i}" if parent_name == "" else f"{parent_name}.{i}"
-            mlflow.log_param(f"{parent_name}.{i}", v)
 
 
 def get_commit_hash(dir_):

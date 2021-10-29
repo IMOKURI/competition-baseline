@@ -26,13 +26,8 @@ hydra:
         high: 1e-5
         log: True
 
-mlflow:
-  enabled: False
-  tracking_uri: http://127.0.0.1:5000
-  experiment: sugi-cassava
-
 wandb:
-  enabled: True
+  enabled: False
   entity: imokuri
   project: cassava
   dir: ${hydra:runtime.cwd}/../cache

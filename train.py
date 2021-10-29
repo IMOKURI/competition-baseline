@@ -20,7 +20,6 @@ def main(c):
     utils.debug_settings(c)
     device = utils.gpu_settings(c)
 
-    utils.setup_mlflow(c)
     run = utils.setup_wandb(c)
 
     input = InputData(c)
@@ -48,7 +47,6 @@ def main(c):
 
     log.info("Done.")
 
-    utils.teardown_mlflow(c, losses.avg)
     utils.teardown_wandb(c, run, losses.avg)
     utils.send_result_to_slack(c, score, losses.avg)
 
