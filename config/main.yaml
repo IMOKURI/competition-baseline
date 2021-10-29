@@ -32,14 +32,14 @@ mlflow:
   experiment: sugi-cassava
 
 wandb:
-  enabled: False
+  enabled: True
   entity: imokuri
   project: cassava
-  dir: ${hydra:runtime.cwd}/../cache/wandb
+  dir: ${hydra:runtime.cwd}/../cache
 
 settings:
   print_freq: 100
-  # gpus: "4,5,6,7"
+  gpus: "4,5,6,7"
   # gpus: "7"
 
   dirs:
@@ -58,6 +58,13 @@ settings:
     - train
     # - validate
     # - inference
+
+  dataset_type: image
+
+  model_type: image
+
+  # scoring: rmse
+  scoring: accuracy
 
   debug: False
   n_debug_data: 1000

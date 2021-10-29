@@ -216,12 +216,13 @@ def setup_mlflow(c):
 
 def setup_wandb(c):
     if c.wandb.enabled:
+        os.makedirs(os.path.abspath(c.wandb.dir), exist_ok=True)
         c_dict = OmegaConf.to_container(c.params, resolve=True)
         c_dict["commit"] = get_commit_hash(c.settings.dirs.working)
         run = wandb.init(
             entity=c.wandb.entity,
             project=c.wandb.project,
-            dir=c.wandb.dir,
+            dir=os.path.abspath(c.wandb.dir),
             config=c_dict,
             job_type=c.settings.job_type[0],
         )
@@ -238,7 +239,7 @@ def teardown_mlflow(c, loss):
 def teardown_wandb(c, run, loss):
     if c.wandb.enabled:
         wandb.summary["loss"] = loss
-        artifact = wandb.Artifact(c.params.model_name, type="model")
+        artifact = wandb.Artifact(c.params.model_name.replace('/', '-'), type="model")
         artifact.add_dir(".")
         run.log_artifact(artifact)
 

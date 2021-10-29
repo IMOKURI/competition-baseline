@@ -56,7 +56,7 @@ def train_epoch(
         else:
             grad_norm = compute_grad_norm(model.parameters())
 
-        end = time.time()
+        # end = time.time()
         if step % c.settings.print_freq == 0 or step == (len(train_loader) - 1):
             log.info(
                 f"Epoch: [{epoch + 1}][{step}/{len(train_loader)}] "
@@ -93,10 +93,12 @@ def validate_epoch(c, valid_loader, model, criterion, device):
 
         if c.settings.n_class == 1:
             preds.append(y_preds.to("cpu").numpy())
-        else:
+        elif c.settings.n_class > 1:
             preds.append(y_preds.softmax(1).to("cpu").numpy())
+        else:
+            raise Exception("Invalid n_class.")
 
-        end = time.time()
+        # end = time.time()
         if step % c.settings.print_freq == 0 or step == (len(valid_loader) - 1):
             log.info(
                 f"EVAL: [{step}/{len(valid_loader)}] "

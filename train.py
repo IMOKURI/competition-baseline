@@ -36,7 +36,7 @@ def main(c):
         losses.update(loss)
 
         log.info(f"========== fold {fold} result ==========")
-        get_result(c, _oof_df, fold)
+        get_result(c, _oof_df, fold, loss)
 
         if c.settings.debug:
             break
@@ -44,13 +44,13 @@ def main(c):
     oof_df.to_csv("oof_df.csv", index=False)
 
     log.info(f"========== final result ==========")
-    score = get_result(c, oof_df, c.params.n_fold)
-    utils.send_result_to_slack(c, score, losses.avg)
+    score = get_result(c, oof_df, c.params.n_fold, losses.avg)
 
     log.info("Done.")
 
     utils.teardown_mlflow(c, losses.avg)
     utils.teardown_wandb(c, run, losses.avg)
+    utils.send_result_to_slack(c, score, losses.avg)
 
 
 if __name__ == "__main__":

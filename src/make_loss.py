@@ -117,7 +117,7 @@ def make_optimizer(c, model):
 def make_scheduler(c, optimizer, ds):
     num_data = len(ds)
     num_steps = (
-        num_data // (c.params.batch_size * c.params.gradient_acc_step) * c.params.epoch
+        num_data // (c.params.batch_size * c.params.gradient_acc_step) * c.params.epoch + 5
     )
 
     if c.params.scheduler == "CosineAnnealingWarmRestarts":

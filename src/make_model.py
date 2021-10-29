@@ -1,20 +1,31 @@
+from abc import ABC, abstractmethod
+
 import timm
 import torch.cuda.amp as amp
 import torch.nn as nn
 
 
 def make_model(c):
-    if False:  # c.params.model_type == "xxx":
-        pass
+    if c.settings.model_type == "image":
+        model = ImageModel(c)
     else:
-        model = BaseModel(c)
+        raise Exception("Invalid model_type.")
 
     if c.settings.multi_gpu:
         model = nn.DataParallel(model)
     return model
 
 
-class BaseModel(nn.Module):
+class BaseModel(ABC):
+    def __init__(self):
+        ...
+
+    @abstractmethod
+    def build(self):
+        ...
+
+
+class ImageModel(nn.Module):
     def __init__(self, c, pretrained=True):
         super().__init__()
         self.amp = c.settings.amp

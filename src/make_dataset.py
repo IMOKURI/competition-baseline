@@ -6,11 +6,11 @@ from torch.utils.data import DataLoader, Dataset
 
 
 def make_dataset(c, df, transform=None, label=True):
-    if False:  # c.params.dataset_type == "xxx":
-        pass
-    else:
-        ds = BaseDataset(c, df, get_transforms(c, transform), label)
+    if c.settings.dataset_type == "image":
+        ds = ImageDataset(c, df, get_transforms(c, transform), label)
 
+    else:
+        raise Exception("Invalid dataset_type.")
     return ds
 
 
@@ -26,7 +26,7 @@ def make_dataloader(c, ds, shuffle, drop_last):
     return dataloader
 
 
-class BaseDataset(Dataset):
+class ImageDataset(Dataset):
     def __init__(self, c, df, transform=None, label=True):
         self.df = df
         self.file_names = df["image_id"].values
