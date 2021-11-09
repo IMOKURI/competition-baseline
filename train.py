@@ -41,7 +41,7 @@ def main(c):
 
     oof_df.to_csv("oof_df.csv", index=False)
 
-    log.info(f"========== final result ==========")
+    log.info("========== final result ==========")
     score = record_result(c, oof_df, c.params.n_fold, losses.avg)
 
     log.info("Done.")
