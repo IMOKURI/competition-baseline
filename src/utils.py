@@ -193,7 +193,6 @@ def setup_wandb(c):
             project=c.wandb.project,
             dir=os.path.abspath(c.wandb.dir),
             config=c_dict,
-            job_type=c.settings.job_type[0],
         )
         return run
 
