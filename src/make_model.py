@@ -36,7 +36,7 @@ class ImageModel(nn.Module):
             self.model_name,
             pretrained=pretrained,
             num_classes=c.settings.n_class,
-            **c.params.model_params
+            # **c.params.model_params
         )
 
         if "convmixer" in self.model_name:

@@ -1,6 +1,4 @@
 defaults:
-  - model@params: base
-  - loss@params: base
   - override hydra/sweeper: optuna
   - _self_
 
@@ -77,3 +75,14 @@ params:
   batch_size: 32
   gradient_acc_step: 1
   max_grad_norm: 1000
+  model_name: swin_base_patch4_window7_224_in22k
+  size: 224
+  drop_rate: 0.1
+  criterion: LabelSmoothCrossEntropyLoss
+  optimizer: Adam
+  scheduler: CosineAnnealingWarmRestarts
+  max_lr: 2e-5
+  lr: 1e-5
+  min_lr: 1e-6
+  weight_decay: 1e-7
+  label_smoothing: 1e-4
