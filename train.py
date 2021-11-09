@@ -14,7 +14,6 @@ log = logging.getLogger(__name__)
 @hydra.main(config_path="config", config_name="main")
 def main(c):
     log.info("Started.")
-    log.info(utils.get_gpu_info(units=True))
 
     utils.fix_seed(c.params.seed)
     utils.debug_settings(c)

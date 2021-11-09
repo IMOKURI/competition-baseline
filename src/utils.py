@@ -3,7 +3,6 @@ import logging
 import math
 import os
 import random
-import subprocess
 import time
 
 import git
@@ -15,34 +14,6 @@ from omegaconf import OmegaConf
 from omegaconf.errors import ConfigAttributeError
 
 log = logging.getLogger("__main__").getChild("utils")
-
-GPU_INFO_DEFAULT_ATTRIBUTES = (
-    "index",
-    "uuid",
-    "name",
-    "timestamp",
-    "memory.total",
-    "memory.free",
-    "memory.used",
-    "utilization.gpu",
-    "utilization.memory",
-)
-
-
-def get_gpu_info(
-    nvidia_smi_path="nvidia-smi", keys=GPU_INFO_DEFAULT_ATTRIBUTES, units=False
-):
-    nu_opt = "" if units else ",nounits"
-    cmd = "%s --query-gpu=%s --format=csv,noheader%s" % (
-        nvidia_smi_path,
-        ",".join(keys),
-        nu_opt,
-    )
-    output = subprocess.check_output(cmd, shell=True)
-    lines = output.decode().split("\n")
-    lines = [line.strip() for line in lines if line.strip() != ""]
-
-    return [{k: v for k, v in zip(keys, line.split(", "))} for line in lines]
 
 
 def fix_seed(seed=42):
@@ -73,7 +44,8 @@ def gpu_settings(c):
         pass
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    log.info(f"torch device: {device}, device count: {torch.cuda.device_count()}")
+    log.info(
+        f"torch device: {device}, device count: {torch.cuda.device_count()}")
     return device
 
 
@@ -146,7 +118,8 @@ class EarlyStopping:
             if self.patience <= 0:
                 return
             self.counter += 1
-            log.info(f"EarlyStopping counter: {self.counter} out of {self.patience}")
+            log.info(
+                f"EarlyStopping counter: {self.counter} out of {self.patience}")
             if self.counter >= self.patience:
                 self.early_stop = True
         else:
@@ -174,7 +147,8 @@ def compute_grad_norm(parameters, norm_type=2.0):
     device = parameters[0].grad.device
     total_norm = torch.norm(
         torch.stack(
-            [torch.norm(p.grad.detach(), norm_type).to(device) for p in parameters]
+            [torch.norm(p.grad.detach(), norm_type).to(device)
+             for p in parameters]
         ),
         norm_type,
     )
@@ -199,7 +173,8 @@ def setup_wandb(c):
 def teardown_wandb(c, run, loss):
     if c.wandb.enabled:
         wandb.summary["loss"] = loss
-        artifact = wandb.Artifact(c.params.model_name.replace("/", "-"), type="model")
+        artifact = wandb.Artifact(
+            c.params.model_name.replace("/", "-"), type="model")
         artifact.add_dir(".")
         run.log_artifact(artifact)
 
