@@ -91,9 +91,9 @@ def validate_epoch(c, valid_loader, model, criterion, device):
         loss = criterion(y_preds, labels)
         losses.update(loss.item(), batch_size)
 
-        if c.settings.n_class == 1:
+        if c.params.n_class == 1:
             preds.append(y_preds.to("cpu").numpy())
-        elif c.settings.n_class > 1:
+        elif c.params.n_class > 1:
             preds.append(y_preds.softmax(1).to("cpu").numpy())
         else:
             raise Exception("Invalid n_class.")

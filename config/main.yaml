@@ -50,29 +50,23 @@ settings:
     # - test.csv
     # - sample_submission.csv
 
-  dataset_type: image
-
-  model_type: image
-
-  # scoring: rmse
-  scoring: accuracy
-
   debug: False
   n_debug_data: 1000
 
   amp: True
   multi_gpu: True
 
-  n_class: 5
-
 params:
   seed: 440
+  n_class: 5
   n_fold: 10
   epoch: 10
   es_patience: 0
   batch_size: 32
   gradient_acc_step: 1
   max_grad_norm: 1000
+  dataset: image_1
+  model: image_1
   model_name: swin_base_patch4_window7_224_in22k
   size: 224
   drop_rate: 0.1
@@ -84,3 +78,4 @@ params:
   min_lr: 1e-6
   weight_decay: 1e-7
   label_smoothing: 1e-4
+  scoring: accuracy

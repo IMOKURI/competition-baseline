@@ -74,10 +74,10 @@ def train_fold(c, df, fold, device):
             preds = 1 / (1 + np.exp(-preds))
 
         # scoring
-        if c.settings.n_class == 1:
-            score = get_score(c.settings.scoring, valid_labels, preds)
-        elif c.settings.n_class > 1:
-            score = get_score(c.settings.scoring, valid_labels, preds.argmax(1))
+        if c.params.n_class == 1:
+            score = get_score(c.params.scoring, valid_labels, preds)
+        elif c.params.n_class > 1:
+            score = get_score(c.params.scoring, valid_labels, preds.argmax(1))
         else:
             raise Exception("Invalid n_class.")
 
@@ -105,10 +105,10 @@ def train_fold(c, df, fold, device):
             log.info("Early stopping")
             break
 
-    if c.settings.n_class == 1:
+    if c.params.n_class == 1:
         valid_folds["preds"] = es.best_preds
-    elif c.settings.n_class > 1:
-        valid_folds[[str(c) for c in range(c.settings.n_class)]] = es.best_preds
+    elif c.params.n_class > 1:
+        valid_folds[[str(c) for c in range(c.params.n_class)]] = es.best_preds
         valid_folds["preds"] = es.best_preds.argmax(1)
     else:
         raise Exception("Invalid n_class.")

@@ -18,12 +18,12 @@ def get_score(scoring, y_true, y_pred):
 
 
 def record_result(c, df, fold, loss=None):
-    if c.settings.scoring == "jaccard":
+    if c.params.scoring == "jaccard":
         score = df["jaccard"].mean()
     else:
         preds = df["preds"].values
         labels = df["label"].values
-        score = get_score(c.settings.scoring, labels, preds)
+        score = get_score(c.params.scoring, labels, preds)
 
     log.info(f"Score: {score:<.5f}")
     if c.wandb.enabled:
